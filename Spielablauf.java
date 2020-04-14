@@ -28,6 +28,7 @@ public class Spielablauf {
 		bankzieht();
 		nochmalziehenSpieler();
 		Banknochmalziehen();
+		ErmittelenGewinner();
 
 	}
 
@@ -169,17 +170,20 @@ public class Spielablauf {
 		}
 	}
 
-	private void ErmittelenGewinner() {
+	private void ErmittelnGewinner() {
 
 		for (int i = 0; i < Spieleranzahl; i++) {
 			if (spieler[i].verloren) {
 				System.out.println(spieler[i].getName() + " sie haben verloren!");
-			} else if (verlorenbank == true) {
-				System.out.println(spieler[i].getName() + "sie haben gewonnen!");
+				System.out.println(spieler[i].getName() + " sie haben noch " + spieler[i].geld + " Chips");
+			} else if (verlorenbank == true && spieler[i].verloren == false) {
+				System.out.println(spieler[i].getName() + " sie haben gewonnen!");
 				spieler[i].geld = spieler[i].geld + spieler[i].Einsatz * 2;
+				System.out.println(spieler[i].getName() + " sie haben jetzt " + spieler[i].geld + " Chips");
 			} else if (spieler[i].getPunkte() > bank.getPunkte() && verlorenbank == false) {
-				System.out.println(spieler[i].getName() + "sie haben gewonnen!");
+				System.out.println(spieler[i].getName() + " sie haben gewonnen!");
 				spieler[i].geld = spieler[i].geld + spieler[i].Einsatz * 2;
+				System.out.println(spieler[i].getName() + " sie haben jetzt " + spieler[i].geld + " Chips");
 			}
 		}
 	}
