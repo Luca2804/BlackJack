@@ -9,14 +9,13 @@ public class Spielablauf {
 	Kartendeck kartendeck = new Kartendeck(6);
 	int Geld = 0;
 	int Spieleranzahl;
-	int Einsatz = 0;
 	Spieler[] spieler;
 	bank bank;
 	String ziehen;
 	boolean verloren;
 	boolean verlorenbank;
 	int Zaehler = 0;
-	
+
 	public void BlackJack() {
 
 		System.out.println("Herzlich Willkommen bei Black Jack");
@@ -88,13 +87,13 @@ public class Spielablauf {
 		for (int i = 0; i < spieler.length; i++) {
 			do {
 				System.out.println(spieler[i].name + " Geben sie ihren Einsatz ein:");
-				Einsatz = scan.nextInt();
-				if (Einsatz > spieler[i].geld) {
+				spieler[i].Einsatz = scan.nextInt();
+				if (spieler[i].Einsatz > spieler[i].geld) {
 					System.out.println("Sie haben nicht so viele Chips");
 				} else {
-					spieler[i].geld = spieler[i].geld - Einsatz;
+					spieler[i].geld = spieler[i].geld - spieler[i].Einsatz;
 				}
-			} while (Einsatz > Geld);
+			} while (spieler[i].Einsatz > spieler[i].geld);
 		}
 	}
 
@@ -128,7 +127,7 @@ public class Spielablauf {
 			do {
 				System.out.println(spieler[Zaehler].getName() + " Wollen sie nochmal ziehen (J oder N)");
 				ziehen = scan.nextLine();
-				if (ziehen.equals("J")) {
+				if (ziehen.equals("J") || ziehen.equals("j")) {
 					spieler[Zaehler].HandKarteHinzufuegen(kartendeck.giveNextCard());
 					spieler[Zaehler].HandkartenWert();
 					System.out.println(spieler[Zaehler].getName() + " Handkarte: " + spieler[Zaehler].getKarte()
@@ -151,7 +150,7 @@ public class Spielablauf {
 
 	private void Banknochmalziehen() {
 
-		while (16 < bank.getPunkte()) {
+		while (16 > bank.getPunkte()) {
 			bank.HandKarteHinzufuegen(kartendeck.giveNextCard());
 			bank.HandkartenWert();
 			System.out.println("Die Bank hat: " + bank.getPunkte());
@@ -170,4 +169,18 @@ public class Spielablauf {
 		}
 	}
 
+	private void ErmittelenGewinner() {
+
+		for (int i = 0; i < Spieleranzahl; i++) {
+			if (spieler[i].verloren) {
+				System.out.println(spieler[i].getName() + " sie haben verloren!");
+			} else if (verlorenbank == true) {
+				System.out.println(spieler[i].getName() + "sie haben gewonnen!");
+				spieler[i].geld = spieler[i].geld + spieler[i].Einsatz * 2;
+			} else if (spieler[i].getPunkte() > bank.getPunkte() && verlorenbank == false) {
+				System.out.println(spieler[i].getName() + "sie haben gewonnen!");
+				spieler[i].geld = spieler[i].geld + spieler[i].Einsatz * 2;
+			}
+		}
+	}
 }
